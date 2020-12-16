@@ -188,6 +188,7 @@ test-suite unit
     , fmt
     , iohk-monitoring
     , hspec
+    , hspec-core
     , memory
     , optparse-applicative
     , ouroboros-consensus-shelley

@@ -286,6 +286,7 @@ import Test.QuickCheck
     , arbitraryBoundedEnum
     , arbitraryPrintableChar
     , arbitrarySizedBoundedIntegral
+    , arbitrarySizedNatural
     , choose
     , counterexample
     , elements
@@ -1041,7 +1042,10 @@ instance Arbitrary ApiEpochInfo where
 instance Arbitrary Script where
     arbitrary = Test.QuickCheck.scale (`div` 3) $ sized scriptTree
       where
-        scriptTree 0 = RequireSignatureOf <$> arbitrary
+        scriptTree 0 = oneof
+            [ RequireSignatureOf <$> arbitrary
+            , ValidFromSlot <$> arbitrary
+            , ValidFromSlot <$> arbitrary ]
         scriptTree n = do
             Positive m <- arbitrary
             let n' = n `div` (m + 1)
@@ -1750,6 +1754,10 @@ instance Arbitrary HealthCheckSMASH where
 instance Arbitrary ApiHealthCheck where
     arbitrary = genericArbitrary
     shrink = genericShrink
+
+instance Arbitrary Natural where
+    shrink = shrinkIntegral
+    arbitrary = arbitrarySizedNatural
 
 {-------------------------------------------------------------------------------
                    Specification / Servant-Swagger Machinery

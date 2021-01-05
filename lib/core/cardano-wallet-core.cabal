@@ -92,6 +92,7 @@ library
     , servant-server
     , split
     , statistics
+    , stm
     , streaming-commons
     , strict-non-empty-containers
     , string-interpolate

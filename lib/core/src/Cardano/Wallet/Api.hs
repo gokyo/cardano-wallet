@@ -33,6 +33,10 @@ module Cardano.Wallet.Api
         , GetWalletKey
         , SignMetadata
 
+    , Assets
+        , ListAssets
+        , GetAsset
+
     , Addresses
         , ListAddresses
         , InspectAddress
@@ -125,6 +129,7 @@ import Cardano.Wallet.Api.Types
     , ApiAddressInspect
     , ApiAddressInspectData
     , ApiAddressT
+    , ApiAsset
     , ApiByronWallet
     , ApiCoinSelectionT
     , ApiFee
@@ -228,6 +233,7 @@ type ApiV2 n apiPool = "v2" :> Api n apiPool
 type Api n apiPool =
          Wallets
     :<|> WalletKeys
+    :<|> Assets
     :<|> Addresses n
     :<|> CoinSelections n
     :<|> Transactions n
@@ -343,7 +349,8 @@ type ListAssets = "wallets"
 type GetAsset = "wallets"
     :> Capture "walletId" (ApiT WalletId)
     :> "assets"
-    :> "fixme"
+    :> Capture "policyId" (ApiT PolicyId)
+    :> Capture "policyItem" (ApiT AssetName)
     :> Get '[JSON] ApiAsset
 
 {-------------------------------------------------------------------------------

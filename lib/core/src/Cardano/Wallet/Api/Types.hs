@@ -46,6 +46,7 @@ module Cardano.Wallet.Api.Types
     , fmtAllowedWords
 
     -- * API Types
+    , ApiAsset (..)
     , ApiAddress (..)
     , ApiCredential (..)
     , ApiAddressData (..)
@@ -428,8 +429,11 @@ newtype ApiMaintenanceAction = ApiMaintenanceAction
     } deriving (Eq, Generic, Show)
 
 data ApiAsset = ApiAsset
-    deriving (Eq, Generic, Show)
-    deriving anyclass NFData
+    { policyId :: ApiT PolicyId
+    , policyItem :: ApiT AssetName
+    , metadata :: ApiT AssetMetadata
+    } deriving (Eq, Generic, Show)
+      deriving anyclass NFData
 
 data ApiAddress (n :: NetworkDiscriminant) = ApiAddress
     { id :: !(ApiT Address, Proxy n)

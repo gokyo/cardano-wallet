@@ -195,6 +195,8 @@ import Cardano.Wallet.Api.Types
     , ApiUtxoStatistics (..)
     , ApiVerificationKey (..)
     , ApiWallet (..)
+    , ApiWalletAssetsBalance (..)
+    , ApiWalletBalance (..)
     , ApiWalletDelegation (..)
     , ApiWalletDelegationNext (..)
     , ApiWalletDelegationStatus (..)
@@ -214,7 +216,6 @@ import Cardano.Wallet.Api.Types
     , PostExternalTransactionData (..)
     , PostTransactionData (..)
     , PostTransactionFeeData (..)
-    , WalletBalance (..)
     , WalletOrAccountPostData (..)
     , WalletPostData (..)
     , WalletPutData (..)
@@ -718,10 +719,14 @@ mkShelleyWallet ctx wid cp meta pending progress = do
         cp
     pure ApiWallet
         { addressPoolGap = ApiT $ getState cp ^. #externalPool . #gap
-        , balance = ApiT $ WalletBalance
+        , balance = ApiWalletBalance
             { available = Quantity $ availableBalance pending cp
             , total = Quantity $ totalBalance pending reward cp
             , reward
+            }
+        , assets = ApiWalletAssetsBalance
+            { available = error "fixme"
+            , total = error "fixme"
             }
         , delegation = apiDelegation
         , id = ApiT wid

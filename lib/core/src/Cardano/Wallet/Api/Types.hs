@@ -66,11 +66,12 @@ module Cardano.Wallet.Api.Types
     , ApiStakePoolMetrics (..)
     , ApiStakePoolFlag (..)
     , ApiWallet (..)
+    , ApiWalletBalance (..)
+    , ApiWalletAssetsBalance (..)
     , ApiWalletPassphrase (..)
     , ApiWalletPassphraseInfo (..)
     , ApiUtxoStatistics (..)
     , toApiUtxoStatistics
-    , WalletBalance (..)
     , WalletPostData (..)
     , WalletPutData (..)
     , SettingsPutData (..)
@@ -214,7 +215,6 @@ import Cardano.Wallet.Primitive.Types
     , SmashServer (..)
     , StakePoolMetadata
     , StartTime (..)
-    , WalletBalance (..)
     , WalletId (..)
     , WalletName (..)
     , decodePoolIdBech32
@@ -332,6 +332,7 @@ import qualified Cardano.Crypto.Wallet as CC
 import qualified Cardano.Wallet.Primitive.AddressDerivation as AD
 import qualified Cardano.Wallet.Primitive.Types as W
 import qualified Cardano.Wallet.Primitive.Types.RewardAccount as W
+import qualified Cardano.Wallet.Primitive.Types.TokenMap as W
 import qualified Codec.Binary.Bech32 as Bech32
 import qualified Codec.Binary.Bech32.TH as Bech32
 import qualified Data.Aeson as Aeson
@@ -342,7 +343,6 @@ import qualified Data.HashMap.Strict as HM
 import qualified Data.Map as Map
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
-
 
 {-------------------------------------------------------------------------------
                                Styles of Wallets
@@ -530,12 +530,26 @@ data ApiCoinSelectionOutput (n :: NetworkDiscriminant) = ApiCoinSelectionOutput
 data ApiWallet = ApiWallet
     { id :: !(ApiT WalletId)
     , addressPoolGap :: !(ApiT AddressPoolGap)
-    , balance :: !(ApiT WalletBalance)
+    , balance :: !ApiWalletBalance
+    , assets :: !ApiWalletAssetsBalance
     , delegation :: !ApiWalletDelegation
     , name :: !(ApiT WalletName)
     , passphrase :: !(Maybe ApiWalletPassphraseInfo)
     , state :: !(ApiT SyncProgress)
     , tip :: !ApiBlockReference
+    } deriving (Eq, Generic, Show)
+      deriving anyclass NFData
+
+data ApiWalletBalance = ApiWalletBalance
+    { available :: !(Quantity "lovelace" Natural)
+    , total :: !(Quantity "lovelace" Natural)
+    , reward :: !(Quantity "lovelace" Natural)
+    } deriving (Eq, Generic, Show)
+      deriving anyclass NFData
+
+data ApiWalletAssetsBalance = ApiWalletAssetsBalance
+    { available :: !(ApiT W.TokenMap)
+    , total :: !(ApiT W.TokenMap)
     } deriving (Eq, Generic, Show)
       deriving anyclass NFData
 
@@ -1592,10 +1606,10 @@ instance FromJSON (ApiT AddressPoolGap) where
 instance ToJSON (ApiT AddressPoolGap) where
     toJSON = toJSON . getAddressPoolGap . getApiT
 
-instance FromJSON (ApiT WalletBalance) where
-    parseJSON = fmap ApiT . genericParseJSON defaultRecordTypeOptions
-instance ToJSON (ApiT WalletBalance) where
-    toJSON = genericToJSON defaultRecordTypeOptions . getApiT
+instance FromJSON ApiWalletBalance where
+    parseJSON = genericParseJSON defaultRecordTypeOptions
+instance ToJSON ApiWalletBalance where
+    toJSON = genericToJSON defaultRecordTypeOptions
 
 data ApiByronWalletBalance = ApiByronWalletBalance
     { available :: !(Quantity "lovelace" Natural)
@@ -1607,6 +1621,16 @@ instance FromJSON ApiByronWalletBalance where
     parseJSON = genericParseJSON defaultRecordTypeOptions
 instance ToJSON ApiByronWalletBalance where
     toJSON = genericToJSON defaultRecordTypeOptions
+
+instance FromJSON ApiWalletAssetsBalance where
+    parseJSON = genericParseJSON defaultRecordTypeOptions
+instance ToJSON ApiWalletAssetsBalance where
+    toJSON = genericToJSON defaultRecordTypeOptions
+
+instance FromJSON (ApiT W.TokenMap) where
+    parseJSON = fmap (ApiT . W.getFlat) . parseJSON
+instance ToJSON (ApiT W.TokenMap) where
+    toJSON = toJSON . W.Flat . getApiT
 
 instance FromJSON (ApiT PoolId) where
     parseJSON = parseJSON >=> eitherToParser

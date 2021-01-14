@@ -427,6 +427,10 @@ newtype ApiMaintenanceAction = ApiMaintenanceAction
     { gcStakePools :: ApiT PoolMetadataGCStatus
     } deriving (Eq, Generic, Show)
 
+data ApiAsset = ApiAsset
+    deriving (Eq, Generic, Show)
+    deriving anyclass NFData
+
 data ApiAddress (n :: NetworkDiscriminant) = ApiAddress
     { id :: !(ApiT Address, Proxy n)
     , state :: !(ApiT AddressState)

@@ -324,6 +324,29 @@ type SignMetadata = "wallets"
     :> Post '[OctetStream] ByteString
 
 {-------------------------------------------------------------------------------
+                                  Assets
+
+  See also: https://input-output-hk.github.io/cardano-wallet/api/#tag/Assets
+-------------------------------------------------------------------------------}
+
+type Assets =
+    ListAssets
+    :<|> GetAsset
+
+-- | https://input-output-hk.github.io/cardano-wallet/api/#operation/listAssets
+type ListAssets = "wallets"
+    :> Capture "walletId" (ApiT WalletId)
+    :> "assets"
+    :> Get '[JSON] [ApiAsset]
+
+-- | https://input-output-hk.github.io/cardano-wallet/api/#operation/getAsset
+type GetAsset = "wallets"
+    :> Capture "walletId" (ApiT WalletId)
+    :> "assets"
+    :> "fixme"
+    :> Get '[JSON] ApiAsset
+
+{-------------------------------------------------------------------------------
                                   Addresses
 
   See also: https://input-output-hk.github.io/cardano-wallet/api/#tag/Addresses

@@ -67,6 +67,8 @@ import Cardano.Wallet.Primitive.Types.Coin
     ( Coin (..) )
 import Cardano.Wallet.Primitive.Types.RewardAccount
     ( RewardAccount (..) )
+import Cardano.Wallet.Primitive.Types.TokenBundle
+    ( TokenBundle (..) )
 import Cardano.Wallet.Primitive.Types.Tx
     ( Direction (..)
     , Tx (..)
@@ -376,7 +378,9 @@ prefilterBlock b u0 = runState $ do
         , direction = dir
         , slotNo = b ^. #header . #slotNo
         , blockHeight = b ^. #header . #blockHeight
-        , amount = Quantity amt
+        -- fixme: ADP-347
+        -- fixme: why on earth do we have both Coin and Quantity "lovelace" Natural?
+        , amount = TokenBundle (Coin $ fromIntegral amt) mempty
         , expiry = Nothing
         }
     applyTx

@@ -50,6 +50,8 @@ module Cardano.Wallet.Api.Server
     , getUTxOsStatistics
     , getWallet
     , joinStakePool
+    , listAssets
+    , getAsset
     , listAddresses
     , listTransactions
     , getTransaction
@@ -165,6 +167,7 @@ import Cardano.Wallet.Api.Types
     , AddressAmount (..)
     , ApiAccountPublicKey (..)
     , ApiAddress (..)
+    , ApiAsset (..)
     , ApiBlockInfo (..)
     , ApiBlockReference (..)
     , ApiBlockReference (..)
@@ -317,6 +320,8 @@ import Cardano.Wallet.Primitive.Types.Coin
     ( Coin (..) )
 import Cardano.Wallet.Primitive.Types.Hash
     ( Hash (..) )
+import Cardano.Wallet.Primitive.Types.TokenPolicy
+    ( TokenName (..), TokenPolicyId (..) )
 import Cardano.Wallet.Primitive.Types.Tx
     ( TransactionInfo (TransactionInfo)
     , Tx (..)
@@ -1249,6 +1254,34 @@ selectCoinsForQuit ctx (ApiT wid) = do
     pure $ mkApiCoinSelection [] (Just (action, path)) utx
   where
     genChange = delegationAddress @n
+
+{-------------------------------------------------------------------------------
+                                     Assets
+-------------------------------------------------------------------------------}
+
+listAssets
+    :: forall ctx s k n.
+        ( ctx ~ ApiLayer s k
+        , CompareDiscovery s
+        , KnownAddresses s
+        )
+    => ctx
+    -> ApiT WalletId
+    -> Handler [ApiAsset]
+listAssets _ctx (ApiT _wid) = error "TODO: ADP-604 listAssets"
+
+getAsset
+    :: forall ctx s k n.
+        ( ctx ~ ApiLayer s k
+        , CompareDiscovery s
+        , KnownAddresses s
+        )
+    => ctx
+    -> ApiT WalletId
+    -> ApiT TokenPolicyId
+    -> ApiT TokenName
+    -> Handler ApiAsset
+getAsset _ctx (ApiT _wid) _policy _name = error "TODO: ADP-604 getAsset"
 
 {-------------------------------------------------------------------------------
                                     Addresses

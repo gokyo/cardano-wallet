@@ -184,6 +184,8 @@ import Cardano.Wallet.Primitive.Types.Address
     ( AddressState )
 import Cardano.Wallet.Primitive.Types.Coin
     ( Coin (..) )
+import Cardano.Wallet.Primitive.Types.TokenPolicy
+    ( TokenName, TokenPolicyId )
 import Cardano.Wallet.Registry
     ( HasWorkerCtx (..), WorkerLog, WorkerRegistry )
 import Cardano.Wallet.Transaction
@@ -349,8 +351,8 @@ type ListAssets = "wallets"
 type GetAsset = "wallets"
     :> Capture "walletId" (ApiT WalletId)
     :> "assets"
-    :> Capture "policyId" (ApiT PolicyId)
-    :> Capture "policyItem" (ApiT AssetName)
+    :> Capture "policyId" (ApiT TokenPolicyId)
+    :> Capture "policyItem" (ApiT TokenName)
     :> Get '[JSON] ApiAsset
 
 {-------------------------------------------------------------------------------

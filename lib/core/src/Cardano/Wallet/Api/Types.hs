@@ -334,6 +334,7 @@ import qualified Cardano.Wallet.Primitive.AddressDerivation as AD
 import qualified Cardano.Wallet.Primitive.Types as W
 import qualified Cardano.Wallet.Primitive.Types.RewardAccount as W
 import qualified Cardano.Wallet.Primitive.Types.TokenMap as W
+import qualified Cardano.Wallet.Primitive.Types.TokenPolicy as W
 import qualified Codec.Binary.Bech32 as Bech32
 import qualified Codec.Binary.Bech32.TH as Bech32
 import qualified Data.Aeson as Aeson
@@ -429,11 +430,23 @@ newtype ApiMaintenanceAction = ApiMaintenanceAction
     } deriving (Eq, Generic, Show)
 
 data ApiAsset = ApiAsset
-    { policyId :: ApiT PolicyId
-    , policyItem :: ApiT AssetName
-    , metadata :: ApiT AssetMetadata
+    { policyId :: ApiT W.TokenPolicyId
+    , policyItem :: ApiT W.TokenName
+    -- , displayName :: Text
+    , metadata :: Maybe (ApiT W.AssetMetadata)
     } deriving (Eq, Generic, Show)
       deriving anyclass NFData
+
+makeApiDisplayName :: ApiAsset -> Text
+makeApiDisplayName (ApiAsset (ApiT p) (ApiT n) md) =
+    makeDisplayName p n (getApiT <$> md)
+
+makeDisplayName :: W.TokenPolicyId -> W.TokenName -> Maybe W.AssetMetadata -> Text
+makeDisplayName pid name = \case
+    Just (W.AssetMetadata md) -> md
+    Nothing -> case T.decodeUtf8' (T.encodeUtf8 $ W.unTokenName name) of
+        Right text | not (T.null text) -> text
+        _ -> T.decodeLatin1 $ convertToBase Base16 $ W.unTokenPolicyId pid
 
 data ApiAddress (n :: NetworkDiscriminant) = ApiAddress
     { id :: !(ApiT Address, Proxy n)
@@ -1165,6 +1178,29 @@ instance DecodeAddress n => FromJSON (ApiAddress n) where
     parseJSON = genericParseJSON defaultRecordTypeOptions
 instance EncodeAddress n => ToJSON (ApiAddress n) where
     toJSON = genericToJSON defaultRecordTypeOptions
+
+instance FromJSON ApiAsset where
+    parseJSON = genericParseJSON defaultRecordTypeOptions
+instance ToJSON ApiAsset where
+    toJSON a = genericToJSON defaultRecordTypeOptions a
+      where
+        -- fixme: add display_name field on
+        _displayName = makeApiDisplayName a
+
+instance FromJSON (ApiT W.TokenPolicyId) where
+    -- TODO: ADP-604
+instance ToJSON (ApiT W.TokenPolicyId) where
+    -- TODO: ADP-604
+
+instance FromJSON (ApiT W.TokenName) where
+    -- TODO: ADP-604
+instance ToJSON (ApiT W.TokenName) where
+    -- TODO: ADP-604
+
+instance FromJSON (ApiT W.AssetMetadata) where
+    parseJSON _ = fail "TODO: ADP-604"
+instance ToJSON (ApiT W.AssetMetadata) where
+    toJSON = undefined  -- TODO: ADP-604
 
 instance ToJSON (ApiT DerivationIndex) where
     toJSON = toJSON . toText . getApiT

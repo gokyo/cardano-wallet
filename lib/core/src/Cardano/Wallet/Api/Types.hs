@@ -765,6 +765,7 @@ data ApiTransaction (n :: NetworkDiscriminant) = ApiTransaction
     , amount :: !(Quantity "lovelace" Natural)
     , fee :: !(Quantity "lovelace" Natural)
     , deposit :: !(Quantity "lovelace" Natural)
+    , assets :: !(ApiT W.TokenMap)
     , insertedAt :: !(Maybe ApiBlockReference)
     , pendingSince :: !(Maybe ApiBlockReference)
     , expiresAt :: !(Maybe ApiSlotReference)
@@ -773,6 +774,7 @@ data ApiTransaction (n :: NetworkDiscriminant) = ApiTransaction
     , inputs :: ![ApiTxInput n]
     , outputs :: ![AddressAmount (ApiT Address, Proxy n)]
     , withdrawals :: ![ApiWithdrawal n]
+    , forge :: !(ApiT W.TokenMap)
     , status :: !(ApiT TxStatus)
     , metadata :: !ApiTxMetadata
     } deriving (Eq, Generic, Show)
@@ -803,6 +805,7 @@ data ApiTxInput (n :: NetworkDiscriminant) = ApiTxInput
 data AddressAmount addr = AddressAmount
     { address :: !addr
     , amount :: !(Quantity "lovelace" Natural)
+    , assets :: !(ApiT W.TokenMap)
     } deriving (Eq, Generic, Show)
       deriving anyclass NFData
 
@@ -1118,6 +1121,7 @@ instance KnownDiscovery (SeqState network key) where
 newtype ApiT a =
     ApiT { getApiT :: a }
     deriving (Generic, Show, Eq, Functor)
+    deriving newtype (Semigroup, Monoid)
     deriving anyclass NFData
 deriving instance Ord a => Ord (ApiT a)
 
@@ -1627,6 +1631,7 @@ instance FromJSON ApiWalletAssetsBalance where
 instance ToJSON ApiWalletAssetsBalance where
     toJSON = genericToJSON defaultRecordTypeOptions
 
+-- fixme: doesn't quite match the spec
 instance FromJSON (ApiT W.TokenMap) where
     parseJSON = fmap (ApiT . W.getFlat) . parseJSON
 instance ToJSON (ApiT W.TokenMap) where
@@ -1772,12 +1777,11 @@ instance ToJSON (ApiT SlotNo) where
     toJSON (ApiT (SlotNo sn)) = toJSON sn
 
 instance FromJSON a => FromJSON (AddressAmount a) where
-    parseJSON bytes = do
-        v@(AddressAmount _ (Quantity c)) <-
-            genericParseJSON defaultRecordTypeOptions bytes
-        if isValidCoin (Coin $ fromIntegral c)
-            then return v
-            else fail $
+    parseJSON = genericParseJSON defaultRecordTypeOptions >=> validate
+      where
+        validate v@(AddressAmount _ (Quantity c) _assets)
+            | isValidCoin (Coin $ fromIntegral c) = pure v
+            | otherwise = fail $
                 "invalid coin value: value has to be lower than or equal to "
                 <> show (unCoin maxBound) <> " lovelace."
 
@@ -2016,7 +2020,7 @@ instance FromText (AddressAmount Text) where
         case split (=='@') text of
             [] -> err
             [_] -> err
-            [l, r] -> AddressAmount r <$> fromText l
+            [l, r] -> AddressAmount r <$> fromText l <*> pure mempty
             _ -> err
 
 instance FromText PostExternalTransactionData where

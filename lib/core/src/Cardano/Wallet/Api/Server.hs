@@ -725,8 +725,8 @@ mkShelleyWallet ctx wid cp meta pending progress = do
             , reward
             }
         , assets = ApiWalletAssetsBalance
-            { available = error "fixme"
-            , total = error "fixme"
+            { available = mempty  -- fixme: ADP-604
+            , total = mempty  -- fixme: ADP-604
             }
         , delegation = apiDelegation
         , id = ApiT wid
@@ -2041,6 +2041,7 @@ mkApiTransaction ti txid mfee ins outs ws (meta, timestamp) txMeta setTimeRefere
         , amount = meta ^. #amount
         , fee = maybe (Quantity 0) (Quantity . fromIntegral . unCoin) mfee
         , deposit = Quantity depositIfAny
+        , assets = mempty  -- fixme: ADP-604
         , insertedAt = Nothing
         , pendingSince = Nothing
         , expiresAt = Nothing
@@ -2049,6 +2050,7 @@ mkApiTransaction ti txid mfee ins outs ws (meta, timestamp) txMeta setTimeRefere
         , inputs = [ApiTxInput (fmap toAddressAmount o) (ApiT i) | (i, o) <- ins]
         , outputs = toAddressAmount <$> outs
         , withdrawals = mkApiWithdrawal @n <$> Map.toList ws
+        , forge = mempty  -- fixme: ADP-604
         , status = ApiT (meta ^. #status)
         , metadata = ApiTxMetadata $ ApiT <$> txMeta
         }
@@ -2109,9 +2111,8 @@ mkApiTransaction ti txid mfee ins outs ws (meta, timestamp) txMeta setTimeRefere
         txOutValue = fromIntegral . unCoin . txOutCoin
 
     toAddressAmount :: TxOut -> AddressAmount (ApiT Address, Proxy n)
-    toAddressAmount (TxOut addr tokens) = AddressAmount
-        (ApiT addr, Proxy @n)
-        (mkApiCoin $ TokenBundle.getCoin tokens)
+    toAddressAmount (TxOut addr (TokenBundle.TokenBundle coin assets)) =
+        AddressAmount (ApiT addr, Proxy @n) (mkApiCoin coin) (ApiT assets)
 
 mkApiCoin
     :: Coin
@@ -2128,8 +2129,8 @@ mkApiWithdrawal (acct, c) =
 coerceCoin
     :: forall (n :: NetworkDiscriminant). AddressAmount (ApiT Address, Proxy n)
     -> TxOut
-coerceCoin (AddressAmount (ApiT addr, _) (Quantity c)) =
-    TxOut addr (TokenBundle.fromCoin $ Coin $ fromIntegral c)
+coerceCoin (AddressAmount (ApiT addr, _) (Quantity c) (ApiT assets)) =
+    TxOut addr (TokenBundle.TokenBundle (Coin $ fromIntegral c) assets)
 
 natural :: Quantity q Word32 -> Quantity q Natural
 natural = Quantity . fromIntegral . getQuantity

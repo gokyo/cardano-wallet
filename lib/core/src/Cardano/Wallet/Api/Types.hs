@@ -114,6 +114,8 @@ module Cardano.Wallet.Api.Types
     , ApiWithdrawal (..)
     , ApiWalletSignData (..)
     , ApiVerificationKey (..)
+    , coinToQuantity
+    , coinFromQuantity
 
     -- * API Types (Byron)
     , ApiByronWallet (..)
@@ -829,6 +831,12 @@ data AddressAmount addr = AddressAmount
     , assets :: !(ApiT W.TokenMap)
     } deriving (Eq, Generic, Show)
       deriving anyclass NFData
+
+coinToQuantity :: Integral n => Coin -> Quantity "lovelace" n
+coinToQuantity = Quantity . fromIntegral . unCoin
+
+coinFromQuantity :: Integral n => Quantity "lovelace" n -> Coin
+coinFromQuantity = Coin . fromIntegral . getQuantity
 
 newtype ApiAddressInspect = ApiAddressInspect
     { unApiAddressInspect :: Aeson.Value }

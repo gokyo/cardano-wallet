@@ -223,6 +223,8 @@ import Cardano.Wallet.Api.Types
     , WalletPostData (..)
     , WalletPutData (..)
     , WalletPutPassphraseData (..)
+    , coinFromQuantity
+    , coinToQuantity
     , getApiMnemonicT
     , toApiEpochInfo
     , toApiNetworkParameters
@@ -2020,8 +2022,7 @@ mkApiCoinSelection deps mcerts (UnsignedTx inputs outputs change) =
             { id = ApiT txid
             , index = index
             , address = (ApiT addr, Proxy @n)
-            , amount = Quantity $
-                fromIntegral $ unCoin $ TokenBundle.getCoin tokens
+            , amount = coinToQuantity $ TokenBundle.getCoin tokens
             , derivationPath = ApiT <$> path
             }
 
@@ -2162,8 +2163,8 @@ mkApiWithdrawal (acct, c) =
 coerceCoin
     :: forall (n :: NetworkDiscriminant). AddressAmount (ApiT Address, Proxy n)
     -> TxOut
-coerceCoin (AddressAmount (ApiT addr, _) (Quantity c) (ApiT assets)) =
-    TxOut addr (TokenBundle.TokenBundle (Coin $ fromIntegral c) assets)
+coerceCoin (AddressAmount (ApiT addr, _) c (ApiT assets)) =
+    TxOut addr (TokenBundle.TokenBundle (coinFromQuantity c) assets)
 
 natural :: Quantity q Word32 -> Quantity q Natural
 natural = Quantity . fromIntegral . getQuantity

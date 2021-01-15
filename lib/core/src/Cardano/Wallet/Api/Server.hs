@@ -2071,10 +2071,10 @@ mkApiTransaction ti txid mfee ins outs ws (meta, timestamp) txMeta setTimeRefere
     tx :: ApiTransaction n
     tx = ApiTransaction
         { id = ApiT txid
-        , amount = Quantity . fromIntegral $ meta ^. #amount . #coin . #unCoin
+        , amount = Quantity . fromIntegral $ meta ^. #amount . #unCoin
         , fee = maybe (Quantity 0) (Quantity . fromIntegral . unCoin) mfee
         , deposit = Quantity depositIfAny
-        , assets = ApiT (meta ^. #amount . #tokens)
+        , assets = ApiT mempty
         , insertedAt = Nothing
         , pendingSince = Nothing
         , expiresAt = Nothing

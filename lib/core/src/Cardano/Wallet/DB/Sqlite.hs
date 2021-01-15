@@ -1648,8 +1648,7 @@ mkTxMetaEntity wid txid mfee meta derived = TxMeta
     , txMetaDirection = derived ^. #direction
     , txMetaSlot = derived ^. #slotNo
     , txMetaBlockHeight = getQuantity (derived ^. #blockHeight)
-    -- fixme: ADP-347 assets too
-    , txMetaAmount = fromIntegral $ W.unCoin (derived ^. #amount . #coin)
+    , txMetaAmount = derived ^. #amount
     , txMetaFee = fromIntegral . W.unCoin <$> mfee
     , txMetaSlotExpires = derived ^. #expiry
     , txMetadata = meta
@@ -1725,9 +1724,7 @@ txHistoryFromEntity ti tip metas ins outs ws =
         , W.direction = txMetaDirection m
         , W.slotNo = txMetaSlot m
         , W.blockHeight = Quantity (txMetaBlockHeight m)
-        -- TODO: ADP-347 assets too
-        , W.amount = TokenBundle.TokenBundle
-            (W.Coin $ fromIntegral $ txMetaAmount m) mempty
+        , W.amount = txMetaAmount m
         , W.expiry = txMetaSlotExpires m
         }
 

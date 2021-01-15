@@ -286,10 +286,8 @@ data TxMeta = TxMeta
 instance NFData TxMeta
 
 instance Buildable TxMeta where
-    build (TxMeta s d sl (Quantity bh) (TokenBundle c a) mex) = mempty
+    build (TxMeta s d sl (Quantity bh) c mex) = mempty
         <> build (WithDirection d c)
-        <> " assets "
-        <> build (WithDirection d (TokenMap.Nested a)) -- fixme: formatting
         <> " " <> build s
         <> " since " <> build sl <> "#" <> build bh
         <> maybe mempty (\ex -> " (expires slot " <> build ex <> ")") mex

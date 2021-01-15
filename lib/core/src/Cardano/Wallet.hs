@@ -1905,10 +1905,7 @@ mkTxMeta ti' blockHeader wState tx cs expiry =
                 , direction = if amtInps > amtOuts then Outgoing else Incoming
                 , slotNo = blockHeader ^. #slotNo
                 , blockHeight = blockHeader ^. #blockHeight
-                -- fixme: ADP-347 calculate asset balance too
-                , amount = TokenBundle.TokenBundle
-                    (Coin $ fromIntegral $ distance amtInps amtOuts)
-                    mempty
+                , amount = Coin $ fromIntegral $ distance amtInps amtOuts
                 , expiry = Just expiry
                 }
             )

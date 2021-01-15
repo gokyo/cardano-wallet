@@ -274,7 +274,7 @@ data TxMeta = TxMeta
     , direction :: !Direction
     , slotNo :: !SlotNo
     , blockHeight :: !(Quantity "block" Word32)
-    , amount :: !TokenBundle
+    , amount :: !Coin
     -- ^ Amount seen from the perspective of the wallet. Refers either to a
     -- spent value for outgoing transaction, or a received value on incoming
     -- transaction.

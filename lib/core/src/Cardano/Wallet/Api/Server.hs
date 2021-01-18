@@ -468,11 +468,14 @@ import qualified Cardano.Wallet.Primitive.AddressDerivation.Byron as Byron
 import qualified Cardano.Wallet.Primitive.AddressDerivation.Icarus as Icarus
 import qualified Cardano.Wallet.Primitive.Types as W
 import qualified Cardano.Wallet.Primitive.Types.TokenBundle as TokenBundle
+import qualified Cardano.Wallet.Primitive.Types.TokenPolicy as W
 import qualified Cardano.Wallet.Primitive.Types.Tx as W
+import qualified Cardano.Wallet.Primitive.Types.UTxO as W
 import qualified Cardano.Wallet.Registry as Registry
 import qualified Data.Aeson as Aeson
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BL
+import qualified Data.Foldable as F
 import qualified Data.List.NonEmpty as NE
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as T
@@ -1278,10 +1281,19 @@ listAssets
 listAssets ctx (ApiT wid) =
     Handler $ ExceptT $ withDatabase df wid $ \db -> runHandler $ do
         let wrk = hoistResource db (MsgFromWorker wid) ctx
-        (cp, _meta, pending) <- liftHandler $ W.readWallet @_ @s @k wrk wid
-        pure []
+        (cp, _meta, _pending) <- liftHandler $ W.readWallet @_ @s @k wrk wid
+        pure $ map (mkApiAsset metadata) $ F.toList $ W.getAssets $ cp ^. #utxo
   where
     df = ctx ^. dbFactory @s @k
+    metadata = Nothing  -- TODO: Use data from metadata server
+
+mkApiAsset :: Maybe W.AssetMetadata -> TokenBundle.AssetId -> ApiAsset
+mkApiAsset metadata (TokenBundle.AssetId policyId assetName) = ApiAsset
+    { policyId = ApiT policyId
+    , assetName = ApiT assetName
+    , displayName = makeDisplayName policyId assetName metadata
+    , metadata = ApiT <$> metadata
+    }
 
 getAsset
     :: ctx

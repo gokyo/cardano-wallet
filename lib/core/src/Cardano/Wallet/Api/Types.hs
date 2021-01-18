@@ -156,6 +156,7 @@ module Cardano.Wallet.Api.Types
     -- * API Type Conversions
     , coinToQuantity
     , coinFromQuantity
+    , makeDisplayName
 
     -- * Others
     , defaultRecordTypeOptions
@@ -435,15 +436,11 @@ newtype ApiMaintenanceAction = ApiMaintenanceAction
 
 data ApiAsset = ApiAsset
     { policyId :: ApiT W.TokenPolicyId
-    , policyItem :: ApiT W.TokenName
-    -- , displayName :: Text
+    , assetName :: ApiT W.TokenName
+    , displayName :: Text
     , metadata :: Maybe (ApiT W.AssetMetadata)
     } deriving (Eq, Generic, Show)
       deriving anyclass NFData
-
-makeApiDisplayName :: ApiAsset -> Text
-makeApiDisplayName (ApiAsset (ApiT p) (ApiT n) md) =
-    makeDisplayName p n (getApiT <$> md)
 
 makeDisplayName :: W.TokenPolicyId -> W.TokenName -> Maybe W.AssetMetadata -> Text
 makeDisplayName pid name = \case
@@ -1192,10 +1189,7 @@ instance EncodeAddress n => ToJSON (ApiAddress n) where
 instance FromJSON ApiAsset where
     parseJSON = genericParseJSON defaultRecordTypeOptions
 instance ToJSON ApiAsset where
-    toJSON a = genericToJSON defaultRecordTypeOptions a
-      where
-        -- fixme: add display_name field on
-        _displayName = makeApiDisplayName a
+    toJSON = genericToJSON defaultRecordTypeOptions
 
 instance FromJSON (ApiT W.TokenPolicyId) where
     -- TODO: ADP-604

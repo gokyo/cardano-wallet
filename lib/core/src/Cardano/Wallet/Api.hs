@@ -352,7 +352,7 @@ type GetAsset = "wallets"
     :> Capture "walletId" (ApiT WalletId)
     :> "assets"
     :> Capture "policyId" (ApiT TokenPolicyId)
-    :> Capture "policyItem" (ApiT TokenName)
+    :> Capture "assetName" (ApiT TokenName)
     :> Get '[JSON] ApiAsset
 
 {-------------------------------------------------------------------------------

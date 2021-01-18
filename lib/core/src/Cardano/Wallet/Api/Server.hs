@@ -226,6 +226,7 @@ import Cardano.Wallet.Api.Types
     , coinFromQuantity
     , coinToQuantity
     , getApiMnemonicT
+    , makeDisplayName
     , toApiEpochInfo
     , toApiNetworkParameters
     , toApiUtxoStatistics

@@ -79,6 +79,8 @@ import Cardano.Wallet.Primitive.Types
     ( WalletId, walletNameMaxLength )
 import Cardano.Wallet.Primitive.Types.Address
     ( Address (..) )
+import Cardano.Wallet.Primitive.Types.TokenPolicy
+    ( TokenName, TokenPolicyId )
 import Control.Arrow
     ( first )
 import Data.Aeson.QQ
@@ -229,6 +231,37 @@ instance Malformed (PathParam (ApiT DerivationIndex)) where
             \(e.g. '1815H' or '44'). \
             \Indexes without suffixes are called 'Soft' \
             \Indexes with suffixes are called 'Hardened'."
+
+instance Wellformed (PathParam (ApiT TokenPolicyId)) where
+    wellformed = [PathParam $ T.replicate 64 "0"]
+
+instance Malformed (PathParam (ApiT TokenPolicyId)) where
+    malformed = first PathParam <$>
+        [ ( "faff", msgWrongLength )
+        , ( T.replicate 65 "0", msgWrongLength )
+        , ( T.replicate 64 "x", msgMalformed )
+        ]
+      where
+        msgWrongLength = "TokenPolicyId should be 32 bytes long"
+        msgMalformed = "TokenPolicyId must be hex-encoded"
+
+instance Wellformed (PathParam (ApiT TokenName)) where
+    wellformed = PathParam <$>
+        [ T.replicate 64 "0"
+        , ""
+        , "FF"
+        , "594f4c4f"
+        , "e29883"
+        ]
+
+instance Malformed (PathParam (ApiT TokenName)) where
+    malformed = first PathParam <$>
+        [ ( T.replicate 65 "0", msgWrongLength )
+        , ( "patate", msgMalformed )
+        ]
+      where
+        msgWrongLength = "AssetName can be at most 32 bytes long"
+        msgMalformed = "AssetName must be hex-encoded"
 
 --
 -- Class instances (BodyParam)

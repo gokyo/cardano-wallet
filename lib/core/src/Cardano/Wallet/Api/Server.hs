@@ -1271,20 +1271,25 @@ listAssets
     => ctx
     -> ApiT WalletId
     -> Handler [ApiAsset]
-listAssets _ctx (ApiT _wid) = error "TODO: ADP-604 listAssets"
+listAssets ctx (ApiT wid) =
+    Handler $ ExceptT $ withDatabase df wid $ \db -> runHandler $ do
+        let wrk = hoistResource db (MsgFromWorker wid) ctx
+        (cp, _meta, pending) <- liftHandler $ W.readWallet @_ @s @k wrk wid
+        pure []
+  where
+    df = ctx ^. dbFactory @s @k
 
 getAsset
-    :: forall ctx s k n.
-        ( ctx ~ ApiLayer s k
-        , CompareDiscovery s
-        , KnownAddresses s
-        )
-    => ctx
+    :: ctx
     -> ApiT WalletId
     -> ApiT TokenPolicyId
     -> ApiT TokenName
     -> Handler ApiAsset
-getAsset _ctx (ApiT _wid) _policy _name = error "TODO: ADP-604 getAsset"
+getAsset _ctx (ApiT _wid) policyId assetName = pure $
+    ApiAsset { policyId, assetName, displayName, metadata }
+  where
+    metadata = Nothing  -- TODO: Use data from metadata server
+    displayName = makeDisplayName (getApiT policyId) (getApiT assetName) metadata
 
 {-------------------------------------------------------------------------------
                                     Addresses

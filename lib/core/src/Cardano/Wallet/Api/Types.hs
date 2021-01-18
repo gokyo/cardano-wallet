@@ -47,6 +47,7 @@ module Cardano.Wallet.Api.Types
 
     -- * API Types
     , ApiAsset (..)
+    , toApiAsset
     , ApiAddress (..)
     , ApiCredential (..)
     , ApiAddressData (..)
@@ -442,12 +443,24 @@ data ApiAsset = ApiAsset
     } deriving (Eq, Generic, Show)
       deriving anyclass NFData
 
+toApiAsset :: Maybe W.AssetMetadata -> W.AssetId -> ApiAsset
+toApiAsset metadata_ (W.AssetId policyId_ assetName_) = ApiAsset
+    { policyId = ApiT policyId_
+    , assetName = ApiT assetName_
+    , displayName = makeDisplayName policyId_ assetName_ metadata_
+    , metadata = ApiT <$> metadata_
+    }
+
 makeDisplayName :: W.TokenPolicyId -> W.TokenName -> Maybe W.AssetMetadata -> Text
-makeDisplayName pid name = \case
+makeDisplayName pid an = \case
     Just (W.AssetMetadata md) -> md
-    Nothing -> case T.decodeUtf8' (T.encodeUtf8 $ W.unTokenName name) of
-        Right text | not (T.null text) -> text
-        _ -> T.decodeLatin1 $ convertToBase Base16 $ W.unTokenPolicyId pid
+    Nothing -> case T.decodeUtf8' assetNameBytes of
+        Right "" -> hexText $ getHash $ W.unTokenPolicyId pid
+        Right text -> text
+        Left _ -> hexText assetNameBytes
+  where
+    assetNameBytes = T.encodeUtf8 $ W.unTokenName an -- TODO: fix AssetName
+    hexText = T.decodeLatin1 . convertToBase Base16
 
 data ApiAddress (n :: NetworkDiscriminant) = ApiAddress
     { id :: !(ApiT Address, Proxy n)

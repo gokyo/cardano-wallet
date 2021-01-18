@@ -227,6 +227,7 @@ import Cardano.Wallet.Api.Types
     , coinToQuantity
     , getApiMnemonicT
     , makeDisplayName
+    , toApiAsset
     , toApiEpochInfo
     , toApiNetworkParameters
     , toApiUtxoStatistics
@@ -468,7 +469,6 @@ import qualified Cardano.Wallet.Primitive.AddressDerivation.Byron as Byron
 import qualified Cardano.Wallet.Primitive.AddressDerivation.Icarus as Icarus
 import qualified Cardano.Wallet.Primitive.Types as W
 import qualified Cardano.Wallet.Primitive.Types.TokenBundle as TokenBundle
-import qualified Cardano.Wallet.Primitive.Types.TokenPolicy as W
 import qualified Cardano.Wallet.Primitive.Types.Tx as W
 import qualified Cardano.Wallet.Primitive.Types.UTxO as W
 import qualified Cardano.Wallet.Registry as Registry
@@ -1270,10 +1270,8 @@ selectCoinsForQuit ctx (ApiT wid) = do
 -------------------------------------------------------------------------------}
 
 listAssets
-    :: forall ctx s k n.
+    :: forall ctx s k.
         ( ctx ~ ApiLayer s k
-        , CompareDiscovery s
-        , KnownAddresses s
         )
     => ctx
     -> ApiT WalletId
@@ -1282,18 +1280,10 @@ listAssets ctx (ApiT wid) =
     Handler $ ExceptT $ withDatabase df wid $ \db -> runHandler $ do
         let wrk = hoistResource db (MsgFromWorker wid) ctx
         (cp, _meta, _pending) <- liftHandler $ W.readWallet @_ @s @k wrk wid
-        pure $ map (mkApiAsset metadata) $ F.toList $ W.getAssets $ cp ^. #utxo
+        pure $ map (toApiAsset metadata) $ F.toList $ W.getAssets $ cp ^. #utxo
   where
     df = ctx ^. dbFactory @s @k
     metadata = Nothing  -- TODO: Use data from metadata server
-
-mkApiAsset :: Maybe W.AssetMetadata -> TokenBundle.AssetId -> ApiAsset
-mkApiAsset metadata (TokenBundle.AssetId policyId assetName) = ApiAsset
-    { policyId = ApiT policyId
-    , assetName = ApiT assetName
-    , displayName = makeDisplayName policyId assetName metadata
-    , metadata = ApiT <$> metadata
-    }
 
 getAsset
     :: ctx

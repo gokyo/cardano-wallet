@@ -72,14 +72,10 @@ import Data.Functor
     ( ($>) )
 import Data.List.NonEmpty
     ( NonEmpty (..) )
-import Data.Quantity
-    ( Quantity (..) )
 import Data.Text
     ( Text )
 import Data.Text.Class
     ( ToText (..) )
-import Data.Word
-    ( Word64 )
 import Fmt
     ( pretty )
 import GHC.Generics
@@ -157,7 +153,7 @@ data NetworkLayer m block = NetworkLayer
 
     , getAccountBalance
         :: RewardAccount
-        -> ExceptT ErrGetAccountBalance m (Quantity "lovelace" Word64)
+        -> ExceptT ErrGetAccountBalance m Coin
 
     , timeInterpreter
         :: TimeInterpreter (ExceptT PastHorizonException m)

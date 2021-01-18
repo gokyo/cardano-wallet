@@ -114,8 +114,6 @@ module Cardano.Wallet.Api.Types
     , ApiWithdrawal (..)
     , ApiWalletSignData (..)
     , ApiVerificationKey (..)
-    , coinToQuantity
-    , coinFromQuantity
 
     -- * API Types (Byron)
     , ApiByronWallet (..)
@@ -154,6 +152,10 @@ module Cardano.Wallet.Api.Types
     , PostTransactionDataT
     , PostTransactionFeeDataT
     , ApiWalletMigrationPostDataT
+
+    -- * API Type Conversions
+    , coinToQuantity
+    , coinFromQuantity
 
     -- * Others
     , defaultRecordTypeOptions

@@ -263,7 +263,7 @@ spec = do
                     , direction = Outgoing
                     , slotNo = SlotNo 1442
                     , blockHeight = Quantity 37
-                    , amount = Quantity 1337
+                    , amount = Coin 1337
                     , expiry = Just (SlotNo 2442)
                     }
             "-0.001337 pending since 1442#37 (expires slot 2442)"
@@ -274,7 +274,7 @@ spec = do
                     , direction = Incoming
                     , slotNo = SlotNo 140
                     , blockHeight = Quantity 1
-                    , amount = Quantity 13371442
+                    , amount = Coin 13371442
                     , expiry = Nothing
                     }
             "+13.371442 in ledger since 140#1" === pretty @_ @Text txMeta
@@ -990,7 +990,7 @@ prop_2_6_2 (ins, u) =
     prop =
         balance (u `excluding` ins)
             ===
-        balance u - balance (u `restrictedBy` ins)
+        balance u `TokenBundle.unsafeSubtract` balance (u `restrictedBy` ins)
 
 {-------------------------------------------------------------------------------
                         UTxO statistics Properties
@@ -1002,7 +1002,7 @@ propUtxoTotalIsBalance
     -> ShowFmt UTxO
     -> Property
 propUtxoTotalIsBalance bType (ShowFmt utxo) =
-    fromIntegral totalStake == balance utxo
+    totalStake == TokenBundle.getCoin (balance utxo)
     & cover 75 (utxo /= mempty) "UTxO /= empty"
   where
     UTxOStatistics _ totalStake _ = computeUtxoStatistics bType utxo

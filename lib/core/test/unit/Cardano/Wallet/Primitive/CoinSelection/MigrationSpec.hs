@@ -177,7 +177,7 @@ prop_inputsGreaterThanOutputs
 prop_inputsGreaterThanOutputs feeOpts batchSize utxo = do
     let selections  = depleteUTxO feeOpts batchSize utxo
     let totalChange = sum (changeBalance <$> selections)
-    let balanceUTxO = balance utxo
+    let balanceUTxO = TokenBundle.getCoin $ balance utxo
     property (balanceUTxO >= fromIntegral totalChange)
         & counterexample ("Total change balance: " <> show totalChange)
         & counterexample ("Total UTxO balance: " <> show balanceUTxO)

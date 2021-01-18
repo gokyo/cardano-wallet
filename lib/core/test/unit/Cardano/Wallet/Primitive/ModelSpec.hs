@@ -275,11 +275,9 @@ prop_countRewardsOnce (WithPending wallet pending rewards)
     pendingBalance =
         sum $ (unCoin . txOutCoin) <$> concatMap outputs (Set.elems pending)
     totalWithPending =
-        totalBalance pending rewardsQ wallet
+        TokenBundle.getCoin $ totalBalance pending rewards wallet
     totalWithoutPending =
-        totalBalance Set.empty rewardsQ wallet
-    rewardsQ =
-        Quantity $ fromIntegral $ unCoin rewards
+        TokenBundle.getCoin $ totalBalance Set.empty rewards wallet
 
     hasPending =
         not $ Set.null pending

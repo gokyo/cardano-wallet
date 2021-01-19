@@ -8,16 +8,15 @@ module Cardano.Wallet.Primitive.Types.TokenPolicy.Gen
 import Prelude
 
 import Cardano.Wallet.Primitive.Types.TokenPolicy
-    ( TokenName, TokenPolicyId )
+    ( TokenName (..), TokenPolicyId )
 import Data.Either
     ( fromRight )
-import Data.Text
-    ( Text )
 import Data.Text.Class
     ( FromText (..) )
 import Test.QuickCheck
     ( Gen, elements )
 
+import qualified Data.ByteString.Char8 as B8
 import qualified Data.Text as T
 
 --------------------------------------------------------------------------------
@@ -31,7 +30,7 @@ shrinkTokenNameSmallRange :: TokenName -> [TokenName]
 shrinkTokenNameSmallRange name = filter (< name) tokenNames
 
 tokenNames :: [TokenName]
-tokenNames = mkTokenName . ("Token" `T.snoc`) <$> ['A' .. 'D']
+tokenNames = UnsafeTokenName . B8.snoc "Token_" <$> ['A' .. 'D']
 
 --------------------------------------------------------------------------------
 -- Token policy identifiers chosen from a small range (to allow collisions)
@@ -50,12 +49,6 @@ tokenPolicies = mkTokenPolicyId <$> ['A' .. 'D']
 -- Internal utilities
 --------------------------------------------------------------------------------
 
-mkTokenName :: Text -> TokenName
-mkTokenName t = fromRight reportError $ fromText t
-  where
-    reportError = error $
-        "Unable to generate token name from text: " <> show t
-
 -- The input must be a character in the range [0-9] or [A-Z].
 --
 mkTokenPolicyId :: Char -> TokenPolicyId
@@ -69,4 +62,4 @@ mkTokenPolicyId c
         "Unable to generate token policy id from character: " <> show c
 
 tokenPolicyIdHexStringLength :: Int
-tokenPolicyIdHexStringLength = 56
+tokenPolicyIdHexStringLength = 64

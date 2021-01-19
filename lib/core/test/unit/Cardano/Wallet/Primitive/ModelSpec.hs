@@ -204,7 +204,7 @@ prop_applyBlockBasic s =
         in
             (ShowFmt utxo === ShowFmt utxo') .&&.
             (availableBalance mempty wallet === balance utxo') .&&.
-            (totalBalance mempty (Quantity 0) wallet === balance utxo')
+            (totalBalance mempty (Coin 0) wallet === balance utxo')
 
 -- Each transaction must have at least one output belonging to us
 prop_applyBlockTxHistoryIncoming :: WalletState -> Property

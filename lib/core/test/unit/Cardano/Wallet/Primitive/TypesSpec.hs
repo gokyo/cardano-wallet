@@ -980,7 +980,7 @@ prop_2_6_1 (u, v) =
     -- a v' that has no overlap with u.
     v' = v `excluding` dom u
     cond = not (u `isSubsetOf` mempty || v' `isSubsetOf` mempty)
-    prop = balance (u <> v') === balance u + balance v'
+    prop = balance (u <> v') === balance u `TokenBundle.add` balance v'
 
 prop_2_6_2 :: (Set TxIn, UTxO) -> Property
 prop_2_6_2 (ins, u) =
@@ -1002,7 +1002,7 @@ propUtxoTotalIsBalance
     -> ShowFmt UTxO
     -> Property
 propUtxoTotalIsBalance bType (ShowFmt utxo) =
-    totalStake == TokenBundle.getCoin (balance utxo)
+    Coin totalStake == TokenBundle.getCoin (balance utxo)
     & cover 75 (utxo /= mempty) "UTxO /= empty"
   where
     UTxOStatistics _ totalStake _ = computeUtxoStatistics bType utxo
@@ -1015,7 +1015,7 @@ propUtxoSumDistribution
     -> ShowFmt UTxO
     -> Property
 propUtxoSumDistribution bType (ShowFmt utxo) =
-    sum (upperVal <$> bars) >= fromIntegral (balance utxo)
+    sum (upperVal <$> bars) >= unCoin (TokenBundle.getCoin (balance utxo))
     & cover 75 (utxo /= mempty) "UTxO /= empty"
     & counterexample ("Histogram: " <> pretty bars)
   where

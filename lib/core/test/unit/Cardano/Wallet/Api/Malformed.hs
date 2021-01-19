@@ -258,11 +258,12 @@ instance Wellformed (PathParam (ApiT TokenName)) where
 instance Malformed (PathParam (ApiT TokenName)) where
     malformed = first PathParam <$>
         [ ( T.replicate 65 "0", msgWrongLength )
+        , ( "f", msgWrongLength )
         , ( "patate", msgMalformed )
         ]
       where
-        msgWrongLength = "AssetName can be at most 32 bytes long"
-        msgMalformed = "AssetName must be hex-encoded"
+        msgWrongLength = "TokenName is not hex-encoded: base16: input: invalid length"
+        msgMalformed = "TokenName is not hex-encoded: base16: input: invalid encoding at offset: 0"
 
 --
 -- Class instances (BodyParam)

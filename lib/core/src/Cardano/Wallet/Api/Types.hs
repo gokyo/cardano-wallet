@@ -268,6 +268,7 @@ import Data.Aeson
     , tagSingleConstructors
     , withObject
     , withText
+    , (.!=)
     , (.:)
     , (.:?)
     , (.=)
@@ -1838,10 +1839,13 @@ instance ToJSON (ApiT SlotNo) where
     toJSON (ApiT (SlotNo sn)) = toJSON sn
 
 instance FromJSON a => FromJSON (AddressAmount a) where
-    parseJSON = genericParseJSON defaultRecordTypeOptions >=> validate
+    parseJSON = withObject "AddressAmount " $ \v -> AddressAmount
+         <$> v .: "address"
+         <*> (v .: "coin" >>= validateCoin)
+         <*> v .:? "assets" .!= mempty
       where
-        validate v@(AddressAmount _ (Quantity c) _assets)
-            | isValidCoin (Coin $ fromIntegral c) = pure v
+        validateCoin q
+            | isValidCoin (coinFromQuantity q) = pure q
             | otherwise = fail $
                 "invalid coin value: value has to be lower than or equal to "
                 <> show (unCoin maxBound) <> " lovelace."

@@ -240,10 +240,11 @@ instance Malformed (PathParam (ApiT TokenPolicyId)) where
         [ ( "faff", msgWrongLength )
         , ( T.replicate 57 "0", msgWrongLength )
         , ( T.replicate 56 "x", msgMalformed )
+        , ( "f", msgMalformed )
         ]
       where
-        msgWrongLength = "TokenPolicyId should be 32 bytes long"
-        msgMalformed = "TokenPolicyId must be hex-encoded"
+        msgMalformed = "Invalid tokenPolicy hash: expecting a hex-encoded value that is 28 bytes in length."
+        msgWrongLength = msgMalformed
 
 instance Wellformed (PathParam (ApiT TokenName)) where
     wellformed = PathParam <$>

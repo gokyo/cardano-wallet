@@ -186,12 +186,8 @@ import Data.Set
     ( Set )
 import Data.TreeDiff
     ( ToExpr (..), defaultExprViaShow, genericToExpr )
-import Data.Word
-    ( Word64 )
 import GHC.Generics
     ( Generic )
-import Numeric.Natural
-    ( Natural )
 import System.Random
     ( getStdRandom, randomR )
 import Test.Hspec

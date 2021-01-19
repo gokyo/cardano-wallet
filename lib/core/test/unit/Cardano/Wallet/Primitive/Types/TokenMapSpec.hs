@@ -483,16 +483,16 @@ testMapData =
 testMapPrettyFlat :: Text
 testMapPrettyFlat = [s|
 - policy: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-  token: APPLE
+  token: 4150504c45
   quantity: 1
 - policy: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-  token: AVOCADO
+  token: 41564f4341444f
   quantity: 2
 - policy: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-  token: BANANA
+  token: 42414e414e41
   quantity: 3
 - policy: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-  token: BLUEBERRY
+  token: 424c55454245525259
   quantity: 4
 |]
 
@@ -500,15 +500,15 @@ testMapPrettyNested :: Text
 testMapPrettyNested = [s|
 - policy: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   tokens:
-    - token: APPLE
+    - token: 4150504c45
       quantity: 1
-    - token: AVOCADO
+    - token: 41564f4341444f
       quantity: 2
 - policy: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
   tokens:
-    - token: BANANA
+    - token: 42414e414e41
       quantity: 3
-    - token: BLUEBERRY
+    - token: 424c55454245525259
       quantity: 4
 |]
 

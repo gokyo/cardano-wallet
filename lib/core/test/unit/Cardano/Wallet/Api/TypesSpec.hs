@@ -896,7 +896,7 @@ spec = parallel $ do
                     , outputs = outputs (x :: ApiTransaction ('Testnet 0))
                     , status = status (x :: ApiTransaction ('Testnet 0))
                     , withdrawals = withdrawals (x :: ApiTransaction ('Testnet 0))
-                    , forge = forge (x :: ApiTransaction ('Testnet 0))
+                    , mint = mint (x :: ApiTransaction ('Testnet 0))
                     , metadata = metadata (x :: ApiTransaction ('Testnet 0))
                     }
             in

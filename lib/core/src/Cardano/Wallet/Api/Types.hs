@@ -809,7 +809,7 @@ data ApiTransaction (n :: NetworkDiscriminant) = ApiTransaction
     , inputs :: ![ApiTxInput n]
     , outputs :: ![AddressAmount (ApiT Address, Proxy n)]
     , withdrawals :: ![ApiWithdrawal n]
-    , forge :: !(ApiT W.TokenMap)
+    , mint :: !(ApiT W.TokenMap)
     , status :: !(ApiT TxStatus)
     , metadata :: !ApiTxMetadata
     } deriving (Eq, Generic, Show)

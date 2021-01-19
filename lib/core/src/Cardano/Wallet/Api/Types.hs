@@ -252,7 +252,7 @@ import Control.DeepSeq
     ( NFData )
 import Control.Monad
     ( guard, (>=>) )
-import Data.Aeson
+import Data.Aeson.Types
     ( FromJSON (..)
     , SumEncoding (..)
     , ToJSON (..)
@@ -264,6 +264,7 @@ import Data.Aeson
     , genericToJSON
     , object
     , omitNothingFields
+    , prependFailure
     , sumEncoding
     , tagSingleConstructors
     , withObject
@@ -1834,10 +1835,12 @@ instance ToJSON (ApiT SlotNo) where
     toJSON (ApiT (SlotNo sn)) = toJSON sn
 
 instance FromJSON a => FromJSON (AddressAmount a) where
-    parseJSON = withObject "AddressAmount " $ \v -> AddressAmount
-         <$> v .: "address"
-         <*> (v .: "coin" >>= validateCoin)
-         <*> v .:? "assets" .!= mempty
+    parseJSON = withObject "AddressAmount " $ \v ->
+        prependFailure "parsing AddressAmount failed, " $
+        AddressAmount
+            <$> v .: "address"
+            <*> (v .: "amount" >>= validateCoin)
+            <*> v .:? "assets" .!= mempty
       where
         validateCoin q
             | isValidCoin (coinFromQuantity q) = pure q

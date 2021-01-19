@@ -583,7 +583,8 @@ spec = parallel $ do
             |] `shouldBe` (Left @String @(ApiT WalletId) msg)
 
         it "AddressAmount (too small)" $ do
-            let msg = "Error in $.amount.quantity: parsing Natural failed, \
+            let msg = "Error in $.amount.quantity: \
+                    \parsing AddressAmount failed, parsing Natural failed, \
                     \unexpected negative number -14"
             Aeson.parseEither parseJSON [aesonQQ|
                 { "address": "<addr>"
@@ -592,7 +593,8 @@ spec = parallel $ do
             |] `shouldBe` (Left @String @(AddressAmount (ApiT Address, Proxy ('Testnet 0))) msg)
 
         it "AddressAmount (too big)" $ do
-            let msg = "Error in $: invalid coin value: value has to be lower \
+            let msg = "Error in $: parsing AddressAmount failed, \
+                    \invalid coin value: value has to be lower \
                     \than or equal to " <> show (unCoin maxBound)
                     <> " lovelace."
             Aeson.parseEither parseJSON [aesonQQ|

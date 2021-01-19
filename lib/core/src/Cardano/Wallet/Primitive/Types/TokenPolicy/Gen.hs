@@ -62,4 +62,4 @@ mkTokenPolicyId c
         "Unable to generate token policy id from character: " <> show c
 
 tokenPolicyIdHexStringLength :: Int
-tokenPolicyIdHexStringLength = 64
+tokenPolicyIdHexStringLength = 56

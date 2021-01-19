@@ -9,6 +9,8 @@ module Cardano.Wallet.Primitive.Types.TokenPolicy
 
       -- * Token Names
     , TokenName (..)
+    , mkTokenName
+    , maxLengthTokenName
 
       -- * Token Metadata
     , AssetMetadata (..)
@@ -25,7 +27,7 @@ import Control.Monad
 import Data.Aeson
     ( FromJSON (..), ToJSON (..) )
 import Data.Bifunctor
-    ( bimap )
+    ( first )
 import Data.ByteArray.Encoding
     ( Base (Base16), convertFromBase, convertToBase )
 import Data.ByteString
@@ -41,6 +43,7 @@ import GHC.Generics
 import Quiet
     ( Quiet (..) )
 
+import qualified Data.ByteString as BS
 import qualified Data.Text.Encoding as T
 
 -- | Token policy identifiers, represented by the hash of the monetary policy
@@ -75,6 +78,17 @@ newtype TokenName =
     deriving stock (Eq, Ord, Generic)
     deriving (Read, Show) via (Quiet TokenName)
 
+-- | Construct a 'TokenName', validating that the length does not exceed
+-- 'maxLengthTokenName'.
+mkTokenName :: ByteString -> Either String TokenName
+mkTokenName bs
+    | BS.length bs <= maxLengthTokenName = Right $ UnsafeTokenName bs
+    | otherwise = Left $ "TokenName length " ++ show (BS.length bs)
+        ++ " exceeds maximum of " ++ show maxLengthTokenName
+
+maxLengthTokenName :: Int
+maxLengthTokenName = 32
+
 instance NFData TokenName
 
 instance Buildable TokenName where
@@ -90,10 +104,10 @@ instance ToText TokenName where
     toText = T.decodeLatin1 . convertToBase Base16 . unTokenName
 
 instance FromText TokenName where
-    fromText = bimap err UnsafeTokenName . convertFromBase Base16 . T.encodeUtf8
-      where
-        err msg = TextDecodingError $
-            "TokenName hash is not hex-encoded: " ++ msg
+    fromText = first TextDecodingError
+        . either (Left . ("TokenName is not hex-encoded: " ++)) mkTokenName
+        . convertFromBase Base16
+        . T.encodeUtf8
 
 -- | Information about an asset, from a source external to the chain.
 newtype AssetMetadata = AssetMetadata

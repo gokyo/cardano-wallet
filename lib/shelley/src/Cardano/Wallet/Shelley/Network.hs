@@ -76,8 +76,6 @@ import Cardano.Wallet.Shelley.Compatibility
     )
 import Control.Applicative
     ( liftA3 )
-import Control.Arrow
-    ( second )
 import Control.Monad
     ( forever, guard, unless, void, when, (>=>) )
 import Control.Monad.Class.MonadAsync
@@ -101,6 +99,7 @@ import Control.Monad.Class.MonadSTM
     , putTMVar
     , readTMVar
     , readTVar
+    , retry
     , takeTMVar
     , writeTVar
     )
@@ -313,15 +312,18 @@ withNetworkLayerBase tr np conn (versionData, _) action = do
     (readNodeEraAndTip, networkParamsVar, interpreterVar, localTxSubmissionQ) <-
         connectNodeTipClient handlers
 
+    -- Alternative read-action which waits for the era to be Just and uses Point
+    -- instead of Tip.
+    let readNodeEraAndTip' = readNodeEraAndTip >>= \case
+            (Just era, tip) -> pure (era, getTipPoint tip)
+            (Nothing, _) -> retry
 
-    queryRewardQ <- connectDelegationRewardsClient handlers
-        (second getTipPoint <$> readNodeEraAndTip)
+    queryRewardQ <- connectDelegationRewardsClient handlers readNodeEraAndTip'
 
     (rewardsObserver, refreshRewards) <-
         newRewardBalanceFetcher tr gp queryRewardQ
 
-
-    let refreshRewardLoop :: (AnyCardanoEra, Tip (CardanoBlock StandardCrypto)) -> IO ()
+    let refreshRewardLoop :: (Maybe AnyCardanoEra, Tip (CardanoBlock StandardCrypto)) -> IO ()
         refreshRewardLoop oldTip = do
             tip <- atomically $ do
                 tip <- readNodeEraAndTip
@@ -329,9 +331,9 @@ withNetworkLayerBase tr np conn (versionData, _) action = do
                 return tip
             refreshRewards tip
             refreshRewardLoop tip
-    link =<< async (refreshRewardLoop (AnyCardanoEra ByronEra, TipGenesis ))
+    link =<< async (refreshRewardLoop (Just $ AnyCardanoEra ByronEra, TipGenesis ))
 
-    let readCurrentNodeEra = fst <$> atomically readNodeEraAndTip
+    let readCurrentNodeEra = fst <$> atomically readNodeEraAndTip'
     let readCurrentNodeTip = snd <$> atomically readNodeEraAndTip
 
     action $ NetworkLayer
@@ -382,7 +384,7 @@ withNetworkLayerBase tr np conn (versionData, _) action = do
     connectNodeTipClient
         :: HasCallStack
         => RetryHandlers
-        -> IO ( STM IO (AnyCardanoEra, Tip (CardanoBlock StandardCrypto))
+        -> IO ( STM IO (Maybe AnyCardanoEra, Tip (CardanoBlock StandardCrypto))
               , TVar IO (W.ProtocolParameters, W.SlottingParameters)
               , TMVar IO (CardanoInterpreter StandardCrypto)
               , TQueue IO (LocalTxSubmissionCmd
@@ -554,7 +556,7 @@ withNetworkLayerBase tr np conn (versionData, _) action = do
                     return tip
                 cb (toBlockHeader . snd $ tip)
                 go tip
-        go (AnyCardanoEra ByronEra, TipGenesis )
+        go (Just $ AnyCardanoEra ByronEra, TipGenesis )
 
     -- TODO(#2042): Make wallets call manually, with matching
     -- stopObserving.
@@ -725,12 +727,12 @@ mkTipSyncClient
         -- ^ Notifier callback for when parameters for tip change.
     -> (CardanoInterpreter StandardCrypto -> m ())
         -- ^ Notifier callback for when time interpreter is updated.
-    -> m (NetworkClient m, STM m (AnyCardanoEra, Tip (CardanoBlock StandardCrypto)))
+    -> m (NetworkClient m, STM m (Maybe AnyCardanoEra, Tip (CardanoBlock StandardCrypto)))
 mkTipSyncClient tr np localTxSubmissionQ onPParamsUpdate onInterpreterUpdate = do
     (localStateQueryQ :: TQueue m (LocalStateQueryCmd (CardanoBlock StandardCrypto) m))
         <- atomically newTQueue
 
-    tipVar <- atomically $ newTVar (AnyCardanoEra ByronEra, TipGenesis)
+    tipVar <- atomically $ newTVar (Just $ AnyCardanoEra ByronEra, TipGenesis)
 
     (onPParamsUpdate' :: (W.ProtocolParameters, W.SlottingParameters) -> m ()) <-
         debounce $ \(pp, sp) -> do
@@ -807,10 +809,16 @@ mkTipSyncClient tr np localTxSubmissionQ onPParamsUpdate onInterpreterUpdate = d
                 InitiatorProtocolOnly $ MuxPeerRaw
                     $ \channel -> runPeer tr' codec channel
                     $ localStateQueryClientPeer
-                    $ localStateQuery (second getTipPoint <$> (readTVar tipVar)) localStateQueryQ
+                    $ localStateQuery (readNodeEraAndTip' tipVar) localStateQueryQ
             })
             nodeToClientVersion
     return (client, readTVar tipVar)
+
+  where
+    -- Waits for the era to be Just
+    readNodeEraAndTip' var = readTVar var >>= \case
+        (Just era, tip) -> pure (era, getTipPoint tip)
+        (Nothing, _) -> retry
 
 -- Reward Account Balances
 
@@ -833,14 +841,14 @@ newRewardBalanceFetcher
     -- ^ Used to convert tips for logging
     -> TQueue IO (LocalStateQueryCmd (CardanoBlock StandardCrypto) IO)
     -> IO ( Observer IO W.RewardAccount W.Coin
-          , (AnyCardanoEra, Tip (CardanoBlock StandardCrypto)) -> IO ()
+          , (Maybe AnyCardanoEra, Tip (CardanoBlock StandardCrypto)) -> IO ()
             -- Call on tip-change to refresh
           )
 newRewardBalanceFetcher tr gp queryRewardQ =
     newObserver (contramap MsgObserverLog tr) fetch
   where
     fetch
-        :: (AnyCardanoEra, Tip (CardanoBlock StandardCrypto))
+        :: (Maybe AnyCardanoEra, Tip (CardanoBlock StandardCrypto))
         -> Set W.RewardAccount
         -> IO (Maybe (Map W.RewardAccount W.Coin))
     fetch (_era, tip) accounts = do

@@ -22,7 +22,7 @@ import Cardano.Wallet.Primitive.Types.TokenMap.Gen
     , shrinkTokenMapSmallRange
     )
 import Cardano.Wallet.Primitive.Types.TokenPolicy
-    ( TokenName, TokenPolicyId )
+    ( TokenName, TokenPolicyId, mkTokenName )
 import Cardano.Wallet.Primitive.Types.TokenPolicy.Gen
     ( genTokenNameSmallRange
     , genTokenPolicyIdSmallRange
@@ -39,6 +39,8 @@ import Data.Aeson.QQ
     ( aesonQQ )
 import Data.Bifunctor
     ( bimap, first, second )
+import Data.ByteString
+    ( ByteString )
 import Data.Either
     ( fromRight )
 import Data.Function
@@ -470,7 +472,7 @@ testMap = testMapData
     & fmap (first (uncurry AssetId))
     & TokenMap.fromFlatList
 
-testMapData :: [((Char, Text), Natural)]
+testMapData :: [((Char, ByteString), Natural)]
 testMapData =
     [ (('A', "APPLE"    ), 1)
     , (('A', "AVOCADO"  ), 2)
@@ -514,11 +516,11 @@ testMapPrettyNested = [s|
 -- Utilities
 --------------------------------------------------------------------------------
 
-dummyTokenName :: Text -> TokenName
-dummyTokenName t = fromRight reportError $ fromText t
+dummyTokenName :: ByteString -> TokenName
+dummyTokenName t = fromRight reportError $ mkTokenName t
   where
     reportError = error $
-        "Unable to construct dummy token name from text: " <> show t
+        "Unable to construct dummy token name from bytes: " <> show t
 
 -- The input must be a character in the range [0-9] or [A-Z].
 --

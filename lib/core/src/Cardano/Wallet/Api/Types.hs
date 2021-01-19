@@ -284,7 +284,7 @@ import Data.Data
 import Data.Either.Combinators
     ( maybeToRight )
 import Data.Either.Extra
-    ( maybeToEither )
+    ( eitherToMaybe, maybeToEither )
 import Data.Function
     ( (&) )
 import Data.Generics.Internal.VL.Lens
@@ -460,8 +460,7 @@ makeDisplayName pid an = \case
         Right text -> text
         Left _ -> hexText assetNameBytes
   where
-    assetNameBytes = T.encodeUtf8 $ W.unTokenName an -- TODO: fix AssetName
-    hexText = T.decodeLatin1 . convertToBase Base16
+    assetNameBytes = W.unTokenName an
 
 data ApiAddress (n :: NetworkDiscriminant) = ApiAddress
     { id :: !(ApiT Address, Proxy n)
@@ -1023,10 +1022,9 @@ instance FromText Iso8601Time where
             <> ", e.g. 2012-09-25T10:15:00Z."
 
 instance FromJSON (ApiT Iso8601Time) where
-    parseJSON =
-        parseJSON >=> eitherToParser . bimap ShowFmt ApiT . fromText
+    parseJSON = fromTextJSON "ISO-8601 Time"
 instance ToJSON (ApiT Iso8601Time) where
-    toJSON = toJSON . toText . getApiT
+    toJSON = toTextJSON
 
 instance FromHttpApiData Iso8601Time where
     parseUrlPiece = first (T.pack . getTextDecodingError) . fromText
@@ -1065,7 +1063,7 @@ data ApiPoolId
     deriving (Eq, Generic, Show)
 
 instance FromText ApiAccountPublicKey where
-    fromText txt = case xpubFromText (T.encodeUtf8 txt) of
+    fromText txt = case xpubFromText txt of
         Nothing ->
             Left $ TextDecodingError $ unwords
             [ "Invalid account public key: expecting a hex-encoded value"
@@ -1073,9 +1071,8 @@ instance FromText ApiAccountPublicKey where
         Just pubkey ->
             Right $ ApiAccountPublicKey $ ApiT pubkey
       where
-        xpubFromText :: ByteString -> Maybe XPub
-        xpubFromText = (either (const Nothing) Just <$> fromHex @ByteString)
-            >=> xpubFromBytes
+        xpubFromText :: Text -> Maybe XPub
+        xpubFromText = fmap eitherToMaybe fromHexText >=> xpubFromBytes
 
 instance FromText (ApiT XPrv) where
     fromText t = case convertFromBase Base16 $ T.encodeUtf8 t of
@@ -1206,14 +1203,15 @@ instance ToJSON ApiAsset where
     toJSON = genericToJSON defaultRecordTypeOptions
 
 instance FromJSON (ApiT W.TokenPolicyId) where
-    -- TODO: ADP-604
+    parseJSON = fromTextJSON "PolicyId"
 instance ToJSON (ApiT W.TokenPolicyId) where
-    -- TODO: ADP-604
+    toJSON = toTextJSON
 
 instance FromJSON (ApiT W.TokenName) where
-    -- TODO: ADP-604
+    parseJSON = withText "AssetName"
+        (fmap (ApiT . W.UnsafeTokenName) . eitherToParser . fromHexText)
 instance ToJSON (ApiT W.TokenName) where
-    -- TODO: ADP-604
+    toJSON = toJSON . hexText . W.unTokenName . getApiT
 
 instance FromJSON (ApiT W.AssetMetadata) where
     parseJSON _ = fail "TODO: ADP-604"
@@ -1221,10 +1219,9 @@ instance ToJSON (ApiT W.AssetMetadata) where
     toJSON = undefined  -- TODO: ADP-604
 
 instance ToJSON (ApiT DerivationIndex) where
-    toJSON = toJSON . toText . getApiT
+    toJSON = toTextJSON
 instance FromJSON (ApiT DerivationIndex) where
-    parseJSON = parseJSON
-        >=> fmap ApiT . eitherToParser . first ShowFmt . fromText
+    parseJSON = fromTextJSON "DerivationIndex"
 
 instance ToJSON ApiVerificationKey where
     toJSON (ApiVerificationKey (pub, role_)) =
@@ -1394,7 +1391,7 @@ instance FromJSON ApiAccountPublicKey where
         parseJSON >=> eitherToParser . first ShowFmt . fromText
 instance ToJSON ApiAccountPublicKey where
     toJSON =
-        toJSON . T.decodeUtf8 . hex . xpubToBytes . getApiT . key
+        toJSON . hexText . xpubToBytes . getApiT . key
 
 instance FromJSON WalletOrAccountPostData where
     parseJSON obj = do
@@ -1478,14 +1475,12 @@ instance ToJSON (ByronWalletPostData mw) where
     toJSON = genericToJSON defaultRecordTypeOptions
 
 instance FromJSON (ApiT (Hash "encryption")) where
-    parseJSON =
-        parseJSON >=> eitherToParser . first ShowFmt . fromText
+    parseJSON = parseJSON >=> eitherToParser . first ShowFmt . fromText
 instance ToJSON (ApiT (Hash "encryption")) where
-    toJSON = toJSON . toText . getApiT
+    toJSON = toTextJSON
 
 instance FromJSON (ApiT XPrv) where
-    parseJSON =
-        parseJSON >=> eitherToParser . first ShowFmt . fromText
+    parseJSON = parseJSON >=> eitherToParser . first ShowFmt . fromText
 instance ToJSON (ApiT XPrv) where
     toJSON = toJSON . toText
 
@@ -1572,9 +1567,9 @@ instance ToJSON ApiFee where
 
 instance (PassphraseMaxLength purpose, PassphraseMinLength purpose)
     => FromJSON (ApiT (Passphrase purpose)) where
-    parseJSON = parseJSON >=> eitherToParser . bimap ShowFmt ApiT . fromText
+    parseJSON = fromTextJSON "Passphrase"
 instance ToJSON (ApiT (Passphrase purpose)) where
-    toJSON = toJSON . toText . getApiT
+    toJSON = toTextJSON
 
 instance FromJSON ApiCredential where
     parseJSON v =
@@ -1662,9 +1657,9 @@ instance ToJSON (ApiMnemonicT sizes) where
     toJSON (ApiMnemonicT (SomeMnemonic mw)) = toJSON (mnemonicToText mw)
 
 instance FromJSON (ApiT WalletId) where
-    parseJSON = parseJSON >=> eitherToParser . bimap ShowFmt ApiT . fromText
+    parseJSON = fromTextJSON "WalletId"
 instance ToJSON (ApiT WalletId) where
-    toJSON = toJSON . toText . getApiT
+    toJSON = toTextJSON
 
 instance FromJSON (ApiT AddressPoolGap) where
     parseJSON = parseJSON >=>
@@ -1737,9 +1732,9 @@ instance ToJSON ApiStakePoolFlag where
     toJSON = genericToJSON defaultSumTypeOptions
 
 instance FromJSON (ApiT WalletName) where
-    parseJSON = parseJSON >=> eitherToParser . bimap ShowFmt ApiT . fromText
+    parseJSON = fromTextJSON "WalletName"
 instance ToJSON (ApiT WalletName) where
-    toJSON = toJSON . toText . getApiT
+    toJSON = toTextJSON
 
 instance FromJSON (ApiT W.Settings) where
     parseJSON = fmap ApiT . genericParseJSON defaultRecordTypeOptions
@@ -1915,9 +1910,9 @@ instance ToJSON (ApiT TxIn) where
         , "index" .= toJSON ix ]
 
 instance FromJSON (ApiT (Hash "Tx")) where
-    parseJSON = parseJSON >=> eitherToParser . bimap ShowFmt ApiT . fromText
+    parseJSON = fromTextJSON "Tx Hash"
 instance ToJSON (ApiT (Hash "Tx")) where
-    toJSON = toJSON . toText . getApiT
+    toJSON = toTextJSON
 
 instance FromJSON (ApiT Direction) where
     parseJSON = fmap ApiT . genericParseJSON defaultSumTypeOptions
@@ -1976,9 +1971,9 @@ instance ToJSON (ApiT ActiveSlotCoefficient) where
     toJSON (ApiT (ActiveSlotCoefficient sn)) = toJSON sn
 
 instance FromJSON (ApiT (Hash "Genesis")) where
-    parseJSON = parseJSON >=> eitherToParser . bimap ShowFmt ApiT . fromText
+    parseJSON = fromTextJSON "Genesis Hash"
 instance ToJSON (ApiT (Hash "Genesis")) where
-    toJSON = toJSON . toText . getApiT
+    toJSON = toTextJSON
 
 instance FromJSON ApiNetworkParameters where
     parseJSON = genericParseJSON defaultRecordTypeOptions
@@ -2192,6 +2187,18 @@ taggedSumTypeOptions base opts = base
 eitherToParser :: Show s => Either s a -> Aeson.Parser a
 eitherToParser = either (fail . show) pure
 
+hexText :: ByteString -> Text
+hexText = T.decodeLatin1 . hex
+
+fromHexText :: Text -> Either String ByteString
+fromHexText = fromHex . T.encodeUtf8
+
+toTextJSON :: ToText a => ApiT a -> Value
+toTextJSON = toJSON . toText . getApiT
+
+fromTextJSON :: FromText a => String -> Value -> Aeson.Parser (ApiT a)
+fromTextJSON n = withText n (eitherToParser . bimap ShowFmt ApiT . fromText)
+
 {-------------------------------------------------------------------------------
                           User-Facing Address Encoding
 -------------------------------------------------------------------------------}
@@ -2310,7 +2317,6 @@ instance ToJSON ApiHealthCheck where
     toJSON = genericToJSON defaultRecordTypeOptions
 
 instance FromJSON (ApiT SmashServer) where
-    parseJSON = parseJSON >=> either (fail . show . ShowFmt) (pure . ApiT) . fromText
-
+    parseJSON = fromTextJSON "SmashServer"
 instance ToJSON (ApiT SmashServer) where
-    toJSON = toJSON . toText . getApiT
+    toJSON = toTextJSON

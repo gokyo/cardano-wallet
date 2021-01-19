@@ -1214,9 +1214,9 @@ instance ToJSON (ApiT W.TokenName) where
     toJSON = toJSON . hexText . W.unTokenName . getApiT
 
 instance FromJSON (ApiT W.AssetMetadata) where
-    parseJSON _ = fail "TODO: ADP-604"
+    parseJSON = fmap ApiT . genericParseJSON defaultRecordTypeOptions
 instance ToJSON (ApiT W.AssetMetadata) where
-    toJSON = undefined  -- TODO: ADP-604
+    toJSON = genericToJSON defaultRecordTypeOptions . getApiT
 
 instance ToJSON (ApiT DerivationIndex) where
     toJSON = toTextJSON

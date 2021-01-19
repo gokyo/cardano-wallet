@@ -8,8 +8,8 @@
         [
             {
                 "quantity": 7,
-                "token": "546f6b656e5f41",
-                "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "asset_name": "546f6b656e5f41",
+                "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             }
         ],
         [],
@@ -17,22 +17,22 @@
         [
             {
                 "quantity": 3,
-                "token": "546f6b656e5f43",
-                "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                "asset_name": "546f6b656e5f43",
+                "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
             }
         ],
         [
             {
                 "quantity": 5,
-                "token": "546f6b656e5f41",
-                "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "asset_name": "546f6b656e5f41",
+                "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             }
         ],
         [
             {
                 "quantity": 8,
-                "token": "546f6b656e5f42",
-                "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "asset_name": "546f6b656e5f42",
+                "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             }
         ]
     ]

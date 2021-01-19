@@ -38,13 +38,13 @@
             "assets": [
                 {
                     "quantity": 1,
-                    "token": "546f6b656e5f43",
-                    "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                    "asset_name": "546f6b656e5f43",
+                    "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 },
                 {
                     "quantity": 1,
-                    "token": "546f6b656e5f42",
-                    "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                    "asset_name": "546f6b656e5f42",
+                    "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
                 }
             ],
             "mint": []
@@ -87,8 +87,8 @@
             "mint": [
                 {
                     "quantity": 1,
-                    "token": "546f6b656e5f42",
-                    "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                    "asset_name": "546f6b656e5f42",
+                    "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                 }
             ]
         },
@@ -131,8 +131,8 @@
             "assets": [
                 {
                     "quantity": 10,
-                    "token": "546f6b656e5f42",
-                    "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                    "asset_name": "546f6b656e5f42",
+                    "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 }
             ],
             "mint": []
@@ -248,8 +248,8 @@
             "assets": [
                 {
                     "quantity": 9,
-                    "token": "546f6b656e5f44",
-                    "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                    "asset_name": "546f6b656e5f44",
+                    "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 }
             ],
             "mint": []
@@ -302,8 +302,8 @@
             "mint": [
                 {
                     "quantity": 5,
-                    "token": "546f6b656e5f42",
-                    "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                    "asset_name": "546f6b656e5f42",
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
                 }
             ]
         },
@@ -336,38 +336,38 @@
             "assets": [
                 {
                     "quantity": 9,
-                    "token": "546f6b656e5f41",
-                    "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                    "asset_name": "546f6b656e5f41",
+                    "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 },
                 {
                     "quantity": 4,
-                    "token": "546f6b656e5f41",
-                    "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                    "asset_name": "546f6b656e5f41",
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
                 },
                 {
                     "quantity": 6,
-                    "token": "546f6b656e5f42",
-                    "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                    "asset_name": "546f6b656e5f42",
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
                 },
                 {
                     "quantity": 5,
-                    "token": "546f6b656e5f43",
-                    "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                    "asset_name": "546f6b656e5f43",
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
                 },
                 {
                     "quantity": 2,
-                    "token": "546f6b656e5f41",
-                    "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                    "asset_name": "546f6b656e5f41",
+                    "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                 },
                 {
                     "quantity": 8,
-                    "token": "546f6b656e5f43",
-                    "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                    "asset_name": "546f6b656e5f43",
+                    "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                 },
                 {
                     "quantity": 6,
-                    "token": "546f6b656e5f44",
-                    "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                    "asset_name": "546f6b656e5f44",
+                    "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                 }
             ],
             "mint": []
@@ -412,18 +412,18 @@
             "mint": [
                 {
                     "quantity": 1,
-                    "token": "546f6b656e5f41",
-                    "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                    "asset_name": "546f6b656e5f41",
+                    "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 },
                 {
                     "quantity": 2,
-                    "token": "546f6b656e5f43",
-                    "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                    "asset_name": "546f6b656e5f43",
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
                 },
                 {
                     "quantity": 10,
-                    "token": "546f6b656e5f41",
-                    "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                    "asset_name": "546f6b656e5f41",
+                    "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                 }
             ]
         },

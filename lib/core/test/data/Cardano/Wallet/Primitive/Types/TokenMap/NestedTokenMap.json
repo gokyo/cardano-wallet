@@ -6,45 +6,45 @@
                 "tokens": [
                     {
                         "quantity": 7,
-                        "token": "546f6b656e5f43"
+                        "asset_name": "546f6b656e5f43"
                     }
                 ],
-                "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             },
             {
                 "tokens": [
                     {
                         "quantity": 2,
-                        "token": "546f6b656e5f41"
+                        "asset_name": "546f6b656e5f41"
                     },
                     {
                         "quantity": 8,
-                        "token": "546f6b656e5f43"
+                        "asset_name": "546f6b656e5f43"
                     }
                 ],
-                "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
             },
             {
                 "tokens": [
                     {
                         "quantity": 5,
-                        "token": "546f6b656e5f44"
+                        "asset_name": "546f6b656e5f44"
                     }
                 ],
-                "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
             },
             {
                 "tokens": [
                     {
                         "quantity": 2,
-                        "token": "546f6b656e5f41"
+                        "asset_name": "546f6b656e5f41"
                     },
                     {
                         "quantity": 9,
-                        "token": "546f6b656e5f42"
+                        "asset_name": "546f6b656e5f42"
                     }
                 ],
-                "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
             }
         ],
         [
@@ -52,10 +52,10 @@
                 "tokens": [
                     {
                         "quantity": 1,
-                        "token": "546f6b656e5f43"
+                        "asset_name": "546f6b656e5f43"
                     }
                 ],
-                "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
             }
         ],
         [
@@ -63,19 +63,19 @@
                 "tokens": [
                     {
                         "quantity": 3,
-                        "token": "546f6b656e5f44"
+                        "asset_name": "546f6b656e5f44"
                     }
                 ],
-                "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             },
             {
                 "tokens": [
                     {
                         "quantity": 3,
-                        "token": "546f6b656e5f41"
+                        "asset_name": "546f6b656e5f41"
                     }
                 ],
-                "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
             }
         ],
         [
@@ -83,10 +83,10 @@
                 "tokens": [
                     {
                         "quantity": 9,
-                        "token": "546f6b656e5f43"
+                        "asset_name": "546f6b656e5f43"
                     }
                 ],
-                "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
             }
         ],
         [
@@ -94,44 +94,44 @@
                 "tokens": [
                     {
                         "quantity": 13,
-                        "token": "546f6b656e5f41"
+                        "asset_name": "546f6b656e5f41"
                     },
                     {
                         "quantity": 1,
-                        "token": "546f6b656e5f42"
+                        "asset_name": "546f6b656e5f42"
                     },
                     {
                         "quantity": 7,
-                        "token": "546f6b656e5f44"
+                        "asset_name": "546f6b656e5f44"
                     }
                 ],
-                "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             },
             {
                 "tokens": [
                     {
                         "quantity": 7,
-                        "token": "546f6b656e5f42"
+                        "asset_name": "546f6b656e5f42"
                     }
                 ],
-                "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
             },
             {
                 "tokens": [
                     {
                         "quantity": 4,
-                        "token": "546f6b656e5f41"
+                        "asset_name": "546f6b656e5f41"
                     },
                     {
                         "quantity": 11,
-                        "token": "546f6b656e5f42"
+                        "asset_name": "546f6b656e5f42"
                     },
                     {
                         "quantity": 4,
-                        "token": "546f6b656e5f44"
+                        "asset_name": "546f6b656e5f44"
                     }
                 ],
-                "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
             }
         ],
         [
@@ -139,14 +139,14 @@
                 "tokens": [
                     {
                         "quantity": 10,
-                        "token": "546f6b656e5f41"
+                        "asset_name": "546f6b656e5f41"
                     },
                     {
                         "quantity": 4,
-                        "token": "546f6b656e5f44"
+                        "asset_name": "546f6b656e5f44"
                     }
                 ],
-                "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
             }
         ],
         [],
@@ -155,19 +155,19 @@
                 "tokens": [
                     {
                         "quantity": 7,
-                        "token": "546f6b656e5f44"
+                        "asset_name": "546f6b656e5f44"
                     }
                 ],
-                "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
             },
             {
                 "tokens": [
                     {
                         "quantity": 10,
-                        "token": "546f6b656e5f44"
+                        "asset_name": "546f6b656e5f44"
                     }
                 ],
-                "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
             }
         ],
         [
@@ -175,31 +175,31 @@
                 "tokens": [
                     {
                         "quantity": 7,
-                        "token": "546f6b656e5f41"
+                        "asset_name": "546f6b656e5f41"
                     },
                     {
                         "quantity": 1,
-                        "token": "546f6b656e5f42"
+                        "asset_name": "546f6b656e5f42"
                     },
                     {
                         "quantity": 1,
-                        "token": "546f6b656e5f44"
+                        "asset_name": "546f6b656e5f44"
                     }
                 ],
-                "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
             },
             {
                 "tokens": [
                     {
                         "quantity": 14,
-                        "token": "546f6b656e5f41"
+                        "asset_name": "546f6b656e5f41"
                     },
                     {
                         "quantity": 10,
-                        "token": "546f6b656e5f42"
+                        "asset_name": "546f6b656e5f42"
                     }
                 ],
-                "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
             }
         ],
         []

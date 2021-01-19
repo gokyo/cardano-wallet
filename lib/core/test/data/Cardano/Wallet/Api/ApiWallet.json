@@ -43,8 +43,8 @@
                 "available": [
                     {
                         "quantity": 4,
-                        "token": "546f6b656e5f44",
-                        "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        "asset_name": "546f6b656e5f44",
+                        "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
                     }
                 ]
             }
@@ -111,25 +111,25 @@
                 "total": [
                     {
                         "quantity": 19,
-                        "token": "546f6b656e5f41",
-                        "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        "asset_name": "546f6b656e5f41",
+                        "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
                     },
                     {
                         "quantity": 8,
-                        "token": "546f6b656e5f44",
-                        "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        "asset_name": "546f6b656e5f44",
+                        "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
                     },
                     {
                         "quantity": 9,
-                        "token": "546f6b656e5f44",
-                        "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        "asset_name": "546f6b656e5f44",
+                        "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     }
                 ],
                 "available": [
                     {
                         "quantity": 10,
-                        "token": "546f6b656e5f44",
-                        "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        "asset_name": "546f6b656e5f44",
+                        "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
                     }
                 ]
             }
@@ -182,55 +182,55 @@
                 "total": [
                     {
                         "quantity": 12,
-                        "token": "546f6b656e5f42",
-                        "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        "asset_name": "546f6b656e5f42",
+                        "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
                     },
                     {
                         "quantity": 1,
-                        "token": "546f6b656e5f43",
-                        "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        "asset_name": "546f6b656e5f43",
+                        "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
                     },
                     {
                         "quantity": 6,
-                        "token": "546f6b656e5f41",
-                        "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        "asset_name": "546f6b656e5f41",
+                        "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     },
                     {
                         "quantity": 5,
-                        "token": "546f6b656e5f43",
-                        "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        "asset_name": "546f6b656e5f43",
+                        "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     },
                     {
                         "quantity": 9,
-                        "token": "546f6b656e5f44",
-                        "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        "asset_name": "546f6b656e5f44",
+                        "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     }
                 ],
                 "available": [
                     {
                         "quantity": 10,
-                        "token": "546f6b656e5f42",
-                        "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        "asset_name": "546f6b656e5f42",
+                        "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                     },
                     {
                         "quantity": 1,
-                        "token": "546f6b656e5f41",
-                        "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        "asset_name": "546f6b656e5f41",
+                        "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
                     },
                     {
                         "quantity": 5,
-                        "token": "546f6b656e5f44",
-                        "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        "asset_name": "546f6b656e5f44",
+                        "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
                     },
                     {
                         "quantity": 16,
-                        "token": "546f6b656e5f41",
-                        "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        "asset_name": "546f6b656e5f41",
+                        "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     },
                     {
                         "quantity": 7,
-                        "token": "546f6b656e5f42",
-                        "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        "asset_name": "546f6b656e5f42",
+                        "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     }
                 ]
             }
@@ -288,15 +288,15 @@
                 "total": [
                     {
                         "quantity": 1,
-                        "token": "546f6b656e5f41",
-                        "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        "asset_name": "546f6b656e5f41",
+                        "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     }
                 ],
                 "available": [
                     {
                         "quantity": 1,
-                        "token": "546f6b656e5f43",
-                        "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        "asset_name": "546f6b656e5f43",
+                        "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
                     }
                 ]
             }
@@ -412,30 +412,30 @@
                 "total": [
                     {
                         "quantity": 9,
-                        "token": "546f6b656e5f44",
-                        "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        "asset_name": "546f6b656e5f44",
+                        "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                     }
                 ],
                 "available": [
                     {
                         "quantity": 1,
-                        "token": "546f6b656e5f43",
-                        "policy": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        "asset_name": "546f6b656e5f43",
+                        "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                     },
                     {
                         "quantity": 2,
-                        "token": "546f6b656e5f41",
-                        "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        "asset_name": "546f6b656e5f41",
+                        "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
                     },
                     {
                         "quantity": 6,
-                        "token": "546f6b656e5f41",
-                        "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        "asset_name": "546f6b656e5f41",
+                        "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
                     },
                     {
                         "quantity": 18,
-                        "token": "546f6b656e5f42",
-                        "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        "asset_name": "546f6b656e5f42",
+                        "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     }
                 ]
             }
@@ -559,23 +559,23 @@
                 "available": [
                     {
                         "quantity": 12,
-                        "token": "546f6b656e5f41",
-                        "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        "asset_name": "546f6b656e5f41",
+                        "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
                     },
                     {
                         "quantity": 11,
-                        "token": "546f6b656e5f42",
-                        "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        "asset_name": "546f6b656e5f42",
+                        "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
                     },
                     {
                         "quantity": 8,
-                        "token": "546f6b656e5f41",
-                        "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        "asset_name": "546f6b656e5f41",
+                        "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     },
                     {
                         "quantity": 6,
-                        "token": "546f6b656e5f43",
-                        "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        "asset_name": "546f6b656e5f43",
+                        "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     }
                 ]
             }
@@ -626,28 +626,28 @@
                 "available": [
                     {
                         "quantity": 12,
-                        "token": "546f6b656e5f41",
-                        "policy": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        "asset_name": "546f6b656e5f41",
+                        "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
                     },
                     {
                         "quantity": 9,
-                        "token": "546f6b656e5f41",
-                        "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        "asset_name": "546f6b656e5f41",
+                        "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
                     },
                     {
                         "quantity": 2,
-                        "token": "546f6b656e5f43",
-                        "policy": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        "asset_name": "546f6b656e5f43",
+                        "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
                     },
                     {
                         "quantity": 5,
-                        "token": "546f6b656e5f41",
-                        "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        "asset_name": "546f6b656e5f41",
+                        "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     },
                     {
                         "quantity": 11,
-                        "token": "546f6b656e5f44",
-                        "policy": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        "asset_name": "546f6b656e5f44",
+                        "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     }
                 ]
             }

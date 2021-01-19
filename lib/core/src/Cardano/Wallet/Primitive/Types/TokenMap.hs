@@ -335,8 +335,8 @@ instance FromJSON (Flat TokenMap) where
 
 -- Used for JSON serialization only: not exported.
 data FlatAssetQuantity = FlatAssetQuantity
-    { _policy :: !TokenPolicyId
-    , _token :: !TokenName
+    { _policyId :: !TokenPolicyId
+    , _assetName :: !TokenName
     , _quantity :: !TokenQuantity
     } deriving Generic
 
